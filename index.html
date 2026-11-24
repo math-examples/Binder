@@ -3,119 +3,480 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#007aff">
 <title>Binder — Universal File Merger</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-:root{--bg:#f5f5f7;--text:#1d1d1f;--text-secondary:#86868b;--card-bg:rgba(255,255,255,.72);--card-border:rgba(0,0,0,.08);--primary:#007aff;--primary-hover:#006ae6;--shadow:0 8px 30px rgba(0,0,0,.08);--radius:16px}
-@media(prefers-color-scheme:dark){:root{--bg:#1c1c1e;--text:#f5f5f7;--text-secondary:#98989d;--card-bg:rgba(44,44,46,.72);--card-border:rgba(255,255,255,.1);--shadow:0 8px 30px rgba(0,0,0,.3)}}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;-webkit-font-smoothing:antialiased;padding:40px 20px;min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
-.container{max-width:680px;width:100%;background:var(--card-bg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--card-border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
-h1{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-.5px}
-.subtitle{font-size:15px;color:var(--text-secondary);margin-bottom:28px;line-height:1.5}
-.tabs{display:flex;gap:8px;margin-bottom:20px}
-.tab{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;background:rgba(142,142,147,.15);color:var(--text-secondary);border:none;flex:1}
-.tab.active{background:var(--primary);color:#fff}
-.tab-content{display:none}
-.tab-content.active{display:block}
-.drop-zone{border:2px dashed var(--card-border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:20px}
-.drop-zone:hover,.drop-zone.dragover{border-color:var(--primary);background:rgba(0,122,255,.05)}
-.drop-zone p{font-size:15px;margin-bottom:16px}
-.url-input{width:100%;padding:14px;background:var(--bg);color:var(--text);border:1px solid var(--card-border);border-radius:8px;font-size:16px;margin-bottom:12px}
-.btn{display:inline-block;padding:14px 28px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;margin:6px}
-.btn:hover{background:var(--primary-hover)}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.options{background:rgba(142,142,147,.1);border-radius:8px;padding:16px;margin-bottom:20px;display:none;font-size:14px}
-.options label{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer}
-.progress-wrap{display:none;margin:20px 0}
-.progress-bar{height:8px;background:rgba(142,142,147,.2);border-radius:8px;overflow:hidden;margin-bottom:4px}
-.progress-fill{height:100%;width:0%;background:var(--primary);transition:width .2s}
-.progress-text{font-size:12px;color:var(--text-secondary)}
-.file-list{background:rgba(142,142,147,.1);border-radius:8px;padding:12px 16px;font-size:13px;margin-bottom:20px;display:none;max-height:200px;overflow-y:auto}
-.file-list ul{list-style:none}
-.file-list li{padding:4px 0;display:flex;align-items:center;gap:8px}
-.file-list li::before{content:"✓";color:#34c759;font-weight:700}
-.output-section{display:none}
-.output-section label{font-size:13px;font-weight:600;margin-bottom:8px;display:block}
-.output-section textarea{width:100%;height:200px;background:rgba(142,142,147,.1);border:1px solid var(--card-border);border-radius:8px;padding:12px;font-family:"SF Mono",Menlo,monospace;font-size:12px;color:var(--text);resize:vertical;margin-bottom:12px}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn-secondary{background:rgba(142,142,147,.2);color:var(--text)}
-.status{font-size:13px;color:var(--text-secondary);margin-top:12px}
-.error{color:#ff3b30}.success{color:#34c759}.warning{color:#ff9500}
-.spinner{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* === Apple Design System === */
+:root {
+    --system-blue: #007aff;
+    --system-green: #34c759;
+    --system-red: #ff3b30;
+    --system-orange: #ff9500;
+    --system-gray: #8e8e93;
+    --system-gray2: #aeaeb2;
+    --system-gray3: #c7c7cc;
+    --system-gray4: #d1d1d6;
+    --system-gray5: #e5e5ea;
+    --system-gray6: #f2f2f7;
+    --label: #000000;
+    --secondary-label: #3c3c43;
+    --tertiary-label: #3c3c4399;
+    --quaternary-label: #3c3c434c;
+    --background: #f2f2f7;
+    --secondary-background: #ffffff;
+    --grouped-background: #f2f2f7;
+    --card-background: rgba(255,255,255,0.85);
+    --separator: rgba(60,60,67,0.12);
+    --fill: rgba(120,120,128,0.12);
+    --fill-secondary: rgba(120,120,128,0.08);
+    --fill-tertiary: rgba(120,120,128,0.04);
+    --shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    --radius: 14px;
+    --radius-small: 10px;
+    --radius-large: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --label: #ffffff;
+        --secondary-label: #ebebf599;
+        --tertiary-label: #ebebf566;
+        --quaternary-label: #ebebf533;
+        --background: #000000;
+        --secondary-background: #1c1c1e;
+        --grouped-background: #000000;
+        --card-background: rgba(44,44,46,0.85);
+        --separator: rgba(235,235,245,0.12);
+        --fill: rgba(120,120,128,0.24);
+        --fill-secondary: rgba(120,120,128,0.18);
+        --fill-tertiary: rgba(120,120,128,0.12);
+        --shadow: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.2);
+    }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background: var(--background);
+    color: var(--label);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+    font-size: 17px;
+    line-height: 1.47;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+}
+
+/* === Container === */
+.container {
+    max-width: 640px;
+    width: 100%;
+}
+
+/* === Header === */
+.header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+.header h1 {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+}
+.header p {
+    font-size: 15px;
+    color: var(--secondary-label);
+    line-height: 1.5;
+    max-width: 480px;
+    margin: 0 auto;
+}
+.privacy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--system-green);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-top: 12px;
+    letter-spacing: 0.2px;
+}
+
+/* === Card === */
+.card {
+    background: var(--card-background);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+/* === Drop Zone === */
+.drop-zone {
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: 2px dashed var(--separator);
+    margin: 16px;
+    border-radius: var(--radius);
+}
+.drop-zone:hover, .drop-zone.dragover {
+    background: var(--fill-secondary);
+    border-color: var(--system-blue);
+}
+.drop-zone-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+}
+.drop-zone p {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--label);
+    margin-bottom: 16px;
+}
+.drop-zone-hint {
+    font-size: 13px;
+    color: var(--tertiary-label);
+    margin-top: 8px;
+}
+
+/* === Buttons === */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    background: var(--system-blue);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-small);
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    width: auto;
+    min-width: 120px;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; }
+.btn-secondary {
+    background: var(--fill);
+    color: var(--system-blue);
+}
+.btn-plain {
+    background: transparent;
+    color: var(--system-blue);
+    font-weight: 400;
+}
+
+/* === Progress === */
+.progress-wrap {
+    padding: 20px 16px;
+    display: none;
+}
+.progress-bar {
+    height: 6px;
+    background: var(--fill);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--system-blue);
+    border-radius: 3px;
+    transition: width 0.2s ease-out;
+}
+.progress-text {
+    font-size: 13px;
+    color: var(--tertiary-label);
+    text-align: center;
+}
+
+/* === Options (Table View Style) === */
+.options {
+    display: none;
+    padding: 8px 0;
+}
+.option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--separator);
+}
+.option-row:last-child { border-bottom: none; }
+.option-label {
+    font-size: 16px;
+    color: var(--label);
+}
+.option-hint {
+    font-size: 13px;
+    color: var(--tertiary-label);
+    margin-top: 2px;
+}
+
+/* iOS Switch */
+.switch {
+    position: relative;
+    width: 51px;
+    height: 31px;
+    flex-shrink: 0;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--system-gray4);
+    border-radius: 31px;
+    transition: 0.3s;
+}
+.switch-slider:before {
+    content: "";
+    position: absolute;
+    height: 27px;
+    width: 27px;
+    left: 2px;
+    bottom: 2px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+.switch input:checked + .switch-slider {
+    background: var(--system-green);
+}
+.switch input:checked + .switch-slider:before {
+    transform: translateX(20px);
+}
+
+/* Select */
+.select-wrap {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--separator);
+}
+.select-wrap label {
+    font-size: 16px;
+    color: var(--label);
+    display: block;
+    margin-bottom: 8px;
+}
+.select-wrap select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--fill-secondary);
+    color: var(--label);
+    border: none;
+    border-radius: var(--radius-small);
+    font-size: 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238e8e93'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+/* === File List === */
+.file-list {
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+.file-list ul { list-style: none; }
+.file-list li {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: var(--secondary-label);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 0.5px solid var(--separator);
+}
+.file-list li:last-child { border-bottom: none; }
+.file-list li::before {
+    content: "✓";
+    color: var(--system-green);
+    font-weight: 700;
+    font-size: 12px;
+}
+
+/* === Output Section === */
+.output-section {
+    display: none;
+    padding: 16px;
+}
+.output-section label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--label);
+    margin-bottom: 8px;
+    display: block;
+}
+.output-section textarea {
+    width: 100%;
+    height: 180px;
+    background: var(--fill-secondary);
+    border: none;
+    border-radius: var(--radius-small);
+    padding: 12px;
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 12px;
+    color: var(--label);
+    resize: vertical;
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+.output-section textarea:focus {
+    outline: 2px solid var(--system-blue);
+    outline-offset: -2px;
+}
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.actions .btn { flex: 1; min-width: 0; }
+
+/* === Status === */
+.status {
+    font-size: 14px;
+    color: var(--tertiary-label);
+    margin-top: 16px;
+    text-align: center;
+    padding: 0 16px 16px;
+}
+.status.error { color: var(--system-red); }
+.status.success { color: var(--system-green); }
+.status.warning { color: var(--system-orange); }
+
+/* === Spinner === */
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* === Animations === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--system-gray4); border-radius: 3px; }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>Binder</h1>
-<p class="subtitle">Universal file merger. Upload a <strong>ZIP</strong> or paste a <strong>URL</strong> — Binder inlines all CSS, JavaScript, images, fonts, and <code>@import</code> rules into a single standalone HTML file.</p>
+    <!-- Header -->
+    <div class="header fade-in">
+        <h1>Binder</h1>
+        <p>Merge your project into a single standalone HTML file. Upload a ZIP — everything runs locally on your device.</p>
+        <span class="privacy-badge">🔒 100% Local & Private</span>
+    </div>
 
-<div class="tabs">
-<button class="tab active" data-tab="zip">📦 Upload ZIP</button>
-<button class="tab" data-tab="url">🔗 Paste URL</button>
-</div>
+    <!-- Main Card -->
+    <div class="card fade-in">
+        <div class="drop-zone" id="dropZone">
+            <span class="drop-zone-icon">📦</span>
+            <p>Drop your project ZIP here</p>
+            <button class="btn" id="selectZipBtn">Choose File</button>
+            <p class="drop-zone-hint">or tap to browse</p>
+            <input type="file" id="zipInput" accept=".zip" style="display:none">
+        </div>
 
-<div class="tab-content active" id="tabZip">
-<div class="drop-zone" id="dropZone">
-<p>Drop your project ZIP here or tap to browse</p>
-<button class="btn" id="selectZipBtn">Choose ZIP File</button>
-<input type="file" id="zipInput" accept=".zip" style="display:none">
-</div>
-</div>
+        <div class="progress-wrap" id="progressWrap">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
 
-<div class="tab-content" id="tabUrl">
-<input type="url" class="url-input" id="urlInput" placeholder="https://example.com">
-<button class="btn" id="fetchUrlBtn">Fetch & Merge</button>
-</div>
+        <div class="options" id="options">
+            <div class="option-row">
+                <div>
+                    <div class="option-label">Strip source maps</div>
+                    <div class="option-hint">Remove .map files from output</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="stripMaps" checked>
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
+            <div class="option-row">
+                <div>
+                    <div class="option-label">Minify output</div>
+                    <div class="option-hint">Smaller file size</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="minifyOpt">
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
+            <div class="select-wrap">
+                <label for="htmlSelect">HTML entry point</label>
+                <select id="htmlSelect"></select>
+            </div>
+        </div>
 
-<div class="progress-wrap" id="progressWrap">
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="progress-text" id="progressText">0%</div>
-</div>
+        <div class="file-list" id="fileList"><ul id="fileListUl"></ul></div>
+    </div>
 
-<div class="options" id="options">
-<label><input type="checkbox" id="stripMaps" checked> Strip source maps (.map files)</label>
-<label><input type="checkbox" id="minifyOpt"> Minify output (smaller file)</label>
-</div>
-
-<div class="file-list" id="fileList"><ul id="fileListUl"></ul></div>
-
-<div class="output-section" id="outputSection">
-<label for="output">Merged HTML:</label>
-<textarea id="output" readonly></textarea>
-<div class="actions">
-<button class="btn" id="downloadBtn">Download Standalone HTML</button>
-<button class="btn btn-secondary" id="copyBtn">Copy to Clipboard</button>
-</div>
-<p class="status" id="status"></p>
-</div>
+    <!-- Output Card -->
+    <div class="card fade-in" id="outputCard" style="display:none;">
+        <div class="output-section" id="outputSection">
+            <label for="output">Merged HTML</label>
+            <textarea id="output" readonly></textarea>
+            <div class="actions">
+                <button class="btn" id="downloadBtn">Download</button>
+                <button class="btn btn-secondary" id="copyBtn">Copy</button>
+            </div>
+        </div>
+        <p class="status" id="status"></p>
+    </div>
 </div>
 
 <script>
-// --- CORS Proxy (using allorigins for demo) ---
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-
 let fileMap = new Map();
 let mergedHTML = '';
 let htmlFileName = '';
+let htmlFiles = [];
 
-const tabs = document.querySelectorAll('.tab');
-const tabZip = document.getElementById('tabZip');
-const tabUrl = document.getElementById('tabUrl');
 const zipInput = document.getElementById('zipInput');
 const dropZone = document.getElementById('dropZone');
-const urlInput = document.getElementById('urlInput');
-const fetchUrlBtn = document.getElementById('fetchUrlBtn');
 const progressWrap = document.getElementById('progressWrap');
 const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
 const options = document.getElementById('options');
 const stripMaps = document.getElementById('stripMaps');
 const minifyOpt = document.getElementById('minifyOpt');
+const htmlSelect = document.getElementById('htmlSelect');
 const fileList = document.getElementById('fileList');
 const fileListUl = document.getElementById('fileListUl');
+const outputCard = document.getElementById('outputCard');
 const outputSection = document.getElementById('outputSection');
 const output = document.getElementById('output');
 const status = document.getElementById('status');
@@ -126,20 +487,7 @@ const copyBtn = document.getElementById('copyBtn');
 const BINARY_EXT = /\.(png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf|eot|avif|heic)$/i;
 const TEXT_EXT = /\.(html?|css|js|json|xml|txt|md|svg)$/i;
 
-// --- Tab Switching ---
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        tabZip.classList.remove('active');
-        tabUrl.classList.remove('active');
-        document.getElementById('tab' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1)).classList.add('active');
-        outputSection.style.display = 'none';
-        fileMap.clear();
-    });
-});
-
-// --- ZIP Handling (same as before) ---
+// --- ZIP Selection ---
 selectZipBtn.addEventListener('click', e => { e.preventDefault(); zipInput.click(); });
 zipInput.addEventListener('change', e => { if (e.target.files[0]) loadZip(e.target.files[0]); });
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
@@ -151,122 +499,87 @@ dropZone.addEventListener('drop', e => {
     else showStatus('Please drop a ZIP file.', 'error');
 });
 
+// --- Load & Extract ZIP ---
 async function loadZip(zipFile) {
-    progressWrap.style.display = 'block'; options.style.display = 'none'; outputSection.style.display = 'none'; fileMap.clear();
+    if (zipFile.size > 50 * 1024 * 1024) showStatus('⚠️ Large ZIP. Processing may take a while on mobile...', 'warning');
+    
+    progressWrap.style.display = 'block'; options.style.display = 'none'; outputCard.style.display = 'none'; fileMap.clear(); htmlFiles = [];
+    
     try {
-        const zip = await JSZip.loadAsync(zipFile, { onUpdate: (meta) => {
-            progressFill.style.width = meta.percent + '%'; progressText.textContent = Math.round(meta.percent) + '%';
-        }});
-        const promises = [];
-        zip.forEach((path, zipEntry) => {
-            if (zipEntry.dir) return;
-            const p = path.replace(/\\/g, '/');
-            fileMap.set(p, { text: null, binary: null });
-            if (BINARY_EXT.test(p)) promises.push(zipEntry.async('arraybuffer').then(b => fileMap.get(p).binary = b));
-            else if (TEXT_EXT.test(p)) promises.push(zipEntry.async('string').then(t => fileMap.get(p).text = t));
+        const zip = await JSZip.loadAsync(zipFile, {
+            onUpdate: (meta) => {
+                const pct = Math.round(meta.percent);
+                progressFill.style.width = pct + '%';
+                progressText.textContent = `${pct}% extracted`;
+            }
         });
+        
+        const promises = [];
+        zip.forEach((relativePath, zipEntry) => {
+            if (zipEntry.dir) return;
+            const path = relativePath.replace(/\\/g, '/');
+            fileMap.set(path, { text: null, binary: null });
+            if (BINARY_EXT.test(path)) {
+                promises.push(zipEntry.async('arraybuffer').then(buf => { if (fileMap.has(path)) fileMap.get(path).binary = buf; }));
+            } else if (TEXT_EXT.test(path)) {
+                promises.push(zipEntry.async('string').then(txt => { if (fileMap.has(path)) fileMap.get(path).text = txt; }));
+            }
+        });
+        
         await Promise.all(promises);
         progressWrap.style.display = 'none';
-        showStatus(`✓ Extracted ${fileMap.size} files.`, 'success');
-        finishAndMerge('index.html');
-    } catch (e) { progressWrap.style.display = 'none'; showStatus('Error: ' + e.message, 'error'); }
-}
-
-// --- URL Fetching ---
-fetchUrlBtn.addEventListener('click', async () => {
-    let url = urlInput.value.trim();
-    if (!url) return showStatus('Please enter a URL', 'error');
-    if (!url.startsWith('http')) url = 'https://' + url;
-    
-    progressWrap.style.display = 'block'; options.style.display = 'none'; outputSection.style.display = 'none'; fileMap.clear();
-    showStatus('<span class="spinner"></span> Fetching page...', '');
-    
-    try {
-        const response = await fetch(CORS_PROXY + encodeURIComponent(url));
-        const htmlText = await response.text();
-        const baseUrl = new URL(url);
-        const baseDir = baseUrl.pathname.substring(0, baseUrl.pathname.lastIndexOf('/') + 1);
-        const origin = baseUrl.origin;
-        
-        // Store main HTML
-        const mainPath = 'index.html';
-        fileMap.set(mainPath, { text: htmlText, binary: null });
-        
-        // Parse to find assets
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlText, 'text/html');
-        const assetUrls = new Set();
-        
-        // CSS links
-        doc.querySelectorAll('link[rel="stylesheet"], link[href$=".css"]').forEach(l => {
-            const href = l.getAttribute('href'); if (href) assetUrls.add(new URL(href, baseUrl).href);
-        });
-        // JS
-        doc.querySelectorAll('script[src]').forEach(s => {
-            const src = s.getAttribute('src'); if (src) assetUrls.add(new URL(src, baseUrl).href);
-        });
-        // Images
-        doc.querySelectorAll('img[src]').forEach(i => {
-            const src = i.getAttribute('src'); if (src) assetUrls.add(new URL(src, baseUrl).href);
-        });
-        // CSS @import and url() will be handled recursively during merge
-        
-        // Fetch all assets
-        let fetched = 0;
-        const total = assetUrls.size;
-        for (const assetUrl of assetUrls) {
-            try {
-                const ext = assetUrl.split('.').pop().split('?')[0].toLowerCase();
-                const path = assetUrl.replace(origin + '/', '');
-                if (BINARY_EXT.test(assetUrl)) {
-                    const resp = await fetch(CORS_PROXY + encodeURIComponent(assetUrl));
-                    const buf = await resp.arrayBuffer();
-                    fileMap.set(path, { text: null, binary: buf });
-                } else if (TEXT_EXT.test(assetUrl)) {
-                    const resp = await fetch(CORS_PROXY + encodeURIComponent(assetUrl));
-                    const txt = await resp.text();
-                    fileMap.set(path, { text: txt, binary: null });
-                }
-            } catch (e) { console.warn('Failed to fetch:', assetUrl); }
-            fetched++;
-            progressFill.style.width = (fetched / total * 100) + '%';
-            progressText.textContent = `Fetched ${fetched}/${total} assets`;
-        }
-        
-        progressWrap.style.display = 'none';
-        showStatus(`✓ Fetched ${fileMap.size} resources.`, 'success');
-        finishAndMerge(mainPath, baseDir);
+        showStatus(`✓ Extracted ${fileMap.size} files locally.`, 'success');
+        setupOptions();
+        mergeSelected();
+        outputCard.style.display = 'block';
+        outputCard.classList.add('fade-in');
     } catch (e) {
         progressWrap.style.display = 'none';
-        showStatus('Error fetching URL: ' + e.message + '<br><small>Try a different CORS proxy or use ZIP upload.</small>', 'error');
+        showStatus('Error reading ZIP: ' + e.message, 'error');
     }
-});
+}
 
-function finishAndMerge(mainPath, baseDirOverride) {
+// --- Setup Options ---
+function setupOptions() {
+    htmlFiles = [...fileMap.keys()].filter(p => p.endsWith('.html') || p.endsWith('.htm')).sort();
+    htmlSelect.innerHTML = '';
+    htmlFiles.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p; opt.textContent = p;
+        if (p.endsWith('index.html')) opt.selected = true;
+        htmlSelect.appendChild(opt);
+    });
     options.style.display = 'block';
-    stripMaps.onchange = () => doMerge(mainPath, baseDirOverride);
-    minifyOpt.onchange = () => doMerge(mainPath, baseDirOverride);
-    doMerge(mainPath, baseDirOverride);
+    htmlSelect.addEventListener('change', mergeSelected);
+    stripMaps.addEventListener('change', mergeSelected);
+    minifyOpt.addEventListener('change', mergeSelected);
     
     fileListUl.innerHTML = '';
     [...fileMap.keys()].sort().forEach(p => { const li = document.createElement('li'); li.textContent = p; fileListUl.appendChild(li); });
     fileList.style.display = 'block';
 }
 
-function doMerge(mainPath, baseDirOverride) {
+// --- Merge Selected ---
+function mergeSelected() {
+    const htmlPath = htmlSelect.value;
+    if (!htmlPath || !fileMap.has(htmlPath)) return;
+    
     let files = new Map(fileMap);
     if (stripMaps.checked) for (const [path] of [...files]) if (path.endsWith('.map')) files.delete(path);
     
     const originalMap = fileMap; fileMap = files;
+    
     try {
-        const baseDir = baseDirOverride || getBaseDir(mainPath);
-        const htmlText = files.get(mainPath).text;
-        htmlFileName = 'page';
+        const baseDir = getBaseDir(htmlPath);
+        const htmlText = files.get(htmlPath).text;
+        htmlFileName = htmlPath.split('/').pop().replace(/\.html?$/i, '');
         let result = mergeHTML(htmlText, baseDir);
         if (minifyOpt.checked) result = result.replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+        
         mergedHTML = result;
         output.value = mergedHTML;
         outputSection.style.display = 'block';
+        
         const sizeKB = Math.round(new Blob([mergedHTML]).size / 1024);
         if (sizeKB > 5000) showStatus(`⚠️ Output is ${sizeKB}KB — may be slow on mobile.`, 'warning');
         else showStatus(`✓ Merged ${files.size} files (${sizeKB}KB). Ready!`, 'success');
@@ -274,7 +587,7 @@ function doMerge(mainPath, baseDirOverride) {
     finally { fileMap = originalMap; }
 }
 
-// --- Merging Engine (same as before) ---
+// --- Merging Engine ---
 function mergeHTML(htmlText, baseDir) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlText, 'text/html');
@@ -354,7 +667,7 @@ function resolvePath(baseDir, relative) {
     if (/^https?:\/\//i.test(clean) || clean.startsWith('//') || clean.startsWith('data:')) return null;
     try { const base = `http://dummy.com/${baseDir}`; return decodeURIComponent(new URL(clean, base).pathname.slice(1)); } catch { return null; }
 }
-function showStatus(msg, type) { status.innerHTML = msg; status.className = 'status ' + type; }
+function showStatus(msg, type) { status.innerHTML = msg; status.className = 'status ' + (type || ''); }
 
 downloadBtn.addEventListener('click', () => {
     if (!mergedHTML) return;
@@ -365,7 +678,7 @@ downloadBtn.addEventListener('click', () => {
 });
 
 copyBtn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(output.value); showStatus('✓ Copied!', 'success'); }
+    try { await navigator.clipboard.writeText(output.value); showStatus('✓ Copied to clipboard!', 'success'); }
     catch { output.select(); document.execCommand('copy'); showStatus('✓ Copied!', 'success'); }
 });
 </script>
