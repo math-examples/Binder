@@ -1,16 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome</title>
-  <style>
-    body { font-family: system-ui; max-width: 800px; margin: 4rem auto; padding: 0 2rem; }
-    h1 { color: #0969da; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binder — Universal File Merger</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{--bg:#f5f5f7;--text:#1d1d1f;--text-secondary:#86868b;--card-bg:rgba(255,255,255,.72);--card-border:rgba(0,0,0,.08);--primary:#007aff;--primary-hover:#006ae6;--shadow:0 8px 30px rgba(0,0,0,.08);--radius:16px}
+@media(prefers-color-scheme:dark){:root{--bg:#1c1c1e;--text:#f5f5f7;--text-secondary:#98989d;--card-bg:rgba(44,44,46,.72);--card-border:rgba(255,255,255,.1);--shadow:0 8px 30px rgba(0,0,0,.3)}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;-webkit-font-smoothing:antialiased;padding:40px 20px;min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
+.container{max-width:680px;width:100%;background:var(--card-bg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--card-border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+h1{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-.5px}
+.subtitle{font-size:15px;color:var(--text-secondary);margin-bottom:28px;line-height:1.5}
+.drop-zone{border:2px dashed var(--card-border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:20px}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--primary);background:rgba(0,122,255,.05)}
+.drop-zone p{font-size:15px;margin-bottom:12px}
+.btn{display:inline-block;padding:10px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;margin:6px}
+.btn:hover{background:var(--primary-hover)}
+.btn:active{transform:scale(.97)}
+.file-list{background:rgba(142,142,147,.1);border-radius:8px;padding:12px 16px;font-size:13px;margin-bottom:20px;display:none;max-height:200px;overflow-y:auto}
+.file-list ul{list-style:none}
+.file-list li{padding:4px 0;display:flex;align-items:center;gap:8px}
+.file-list li::before{content:"✓";color:#34c759;font-weight:700}
+.output-section{display:none}
+.output-section label{font-size:13px;font-weight:600;margin-bottom:8px;display:block}
+.output-section textarea{width:100%;height:200px;background:rgba(142,142,147,.1);border:1px solid var(--card-border);border-radius:8px;padding:12px;font-family:"SF Mono",Menlo,monospace;font-size:12px;color:var(--text);resize:vertical;margin-bottom:12px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-secondary{background:rgba(142,142,147,.2);color:var(--text)}
+.status{font-size:13px;color:var(--text-secondary);margin-top:12px}
+.error{color:#ff3b30}.success{color:#34c759}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
-  <h1>🚀 Site is live</h1>
-  <p>Push changes to this branch and GitHub Pages updates automatically.</p>
+<div class="container">
+<h1>Binder</h1>
+<p class="subtitle">Universal file merger. Upload a <strong>ZIP file</strong> of your project — Binder will inline all CSS, JavaScript, and CSS <code>@import</code> rules into a single standalone HTML file.</p>
+<div class="drop-zone" id="dropZone">
+<p>Drop your project ZIP here or tap to browse</p>
+<button class="btn" id="selectZipBtn">Choose ZIP File</button>
+<input type="file" id="zipInput" accept=".zip" style="display:none">
+</div>
+<div class="file-list" id="fileList"><ul id="fileListUl"></ul></div>
+<div class="output-section" id="outputSection">
+<label for="output">Merged HTML:</label>
+<textarea id="output" readonly></textarea>
+<div class="actions">
+<button class="btn" id="downloadBtn">Download Standalone HTML</button>
+<button class="btn btn-secondary" id="copyBtn">Copy to Clipboard</button>
+</div>
+<p class="status" id="status"></p>
+</div>
+</div>
+<script>
+let fileMap = new Map();
+let mergedHTML = '';
+let htmlFileName = '';
+
+const dropZone = document.getElementById('dropZone');
+const zipInput = document.getElementById('zipInput');
+const fileList = document.getElementById('fileList');
+const fileListUl = document.getElementById('fileListUl');
+const outputSection = document.getElementById('outputSection');
+const output = document.getElementById('output');
+const status = document.getElementById('status');
+const selectZipBtn = document.getElementById('selectZipBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const copyBtn = document.getElementById('copyBtn');
+
+// --- ZIP Selection ---
+selectZipBtn.addEventListener('click', e => { e.preventDefault(); zipInput.click(); });
+zipInput.addEventListener('change', e => { if (e.target.files[0]) loadZip(e.target.files[0]); });
+
+// --- Drag & Drop ZIP ---
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.name.endsWith('.zip')) loadZip(file);
+    else showStatus('Please drop a ZIP file.', 'error');
+});
+
+// --- Load & Extract ZIP ---
+async function loadZip(zipFile) {
+    showStatus('<span class="spinner"></span> Extracting ZIP...', '');
+    fileMap.clear();
+    try {
+        const zip = await JSZip.loadAsync(zipFile);
+        const promises = [];
+        zip.forEach((relativePath, zipEntry) => {
+            if (!zipEntry.dir) {
+                promises.push(
+                    zipEntry.async('string').then(text => {
+                        const path = relativePath.replace(/\\/g, '/');
+                        fileMap.set(path, { text });
+                    })
+                );
+            }
+        });
+        await Promise.all(promises);
+        processFiles();
+    } catch (e) {
+        showStatus('Error reading ZIP: ' + e.message, 'error');
+    }
+}
+
+// --- Process Extracted Files ---
+function processFiles() {
+    let htmlPath = null;
+    for (const [path] of fileMap) {
+        if (path.endsWith('index.html')) { htmlPath = path; break; }
+    }
+    if (!htmlPath) {
+        for (const [path] of fileMap) {
+            if (path.endsWith('.html')) { htmlPath = path; break; }
+        }
+    }
+    if (!htmlPath) { showStatus('No HTML file found in ZIP.', 'error'); return; }
+    
+    htmlFileName = htmlPath.split('/').pop().replace('.html', '');
+    showStatus('<span class="spinner"></span> Merging files...', '');
+    
+    setTimeout(() => {
+        try {
+            const baseDir = getBaseDir(htmlPath);
+            const htmlText = fileMap.get(htmlPath).text;
+            mergedHTML = mergeHTML(htmlText, baseDir);
+            output.value = mergedHTML;
+            outputSection.style.display = 'block';
+            showStatus(`✓ Merged ${fileMap.size} files. Ready to download.`, 'success');
+            
+            fileListUl.innerHTML = '';
+            [...fileMap.keys()].sort().forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = p;
+                fileListUl.appendChild(li);
+            });
+            fileList.style.display = 'block';
+        } catch (e) {
+            showStatus('Error: ' + e.message, 'error');
+        }
+    }, 50);
+}
+
+// --- Merging Engine ---
+function mergeHTML(htmlText, baseDir) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlText, 'text/html');
+    
+    // Process CSS links
+    const links = [...doc.querySelectorAll('link[rel="stylesheet"], link[href$=".css"]')];
+    for (const link of links) {
+        const href = link.getAttribute('href');
+        const cssPath = resolvePath(baseDir, href);
+        if (cssPath && fileMap.has(cssPath)) {
+            let cssText = fileMap.get(cssPath).text;
+            cssText = inlineCSSImports(cssText, getBaseDir(cssPath));
+            const style = doc.createElement('style');
+            style.textContent = cssText;
+            link.parentNode.replaceChild(style, link);
+        }
+    }
+    
+    // Process JS scripts
+    const scripts = [...doc.querySelectorAll('script[src]')];
+    for (const script of scripts) {
+        const src = script.getAttribute('src');
+        const jsPath = resolvePath(baseDir, src);
+        if (jsPath && fileMap.has(jsPath)) {
+            const jsText = fileMap.get(jsPath).text;
+            const newScript = doc.createElement('script');
+            newScript.textContent = jsText;
+            [...script.attributes].forEach(attr => {
+                if (attr.name !== 'src') newScript.setAttribute(attr.name, attr.value);
+            });
+            script.parentNode.replaceChild(newScript, script);
+        }
+    }
+    
+    return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+}
+
+// --- Utilities ---
+function getBaseDir(filePath) {
+    const lastSlash = filePath.lastIndexOf('/');
+    return lastSlash === -1 ? '' : filePath.substring(0, lastSlash + 1);
+}
+
+function resolvePath(baseDir, relative) {
+    let clean = relative.split('?')[0].split('#')[0];
+    if (/^https?:\/\//i.test(clean) || clean.startsWith('//') || clean.startsWith('data:')) return null;
+    try {
+        const base = `http://dummy.com/${baseDir}`;
+        return decodeURIComponent(new URL(clean, base).pathname.slice(1));
+    } catch { return null; }
+}
+
+function inlineCSSImports(cssText, cssBaseDir) {
+    return cssText.replace(/@import\s+(?:url\(['"]?([^'"]+)['"]?\)|['"]([^'"]+)['"])\s*;?/gi, (match, url1, url2) => {
+        const importUrl = url1 || url2;
+        if (!importUrl) return match;
+        const importPath = resolvePath(cssBaseDir, importUrl);
+        if (importPath && fileMap.has(importPath)) {
+            let importedCss = fileMap.get(importPath).text;
+            importedCss = inlineCSSImports(importedCss, getBaseDir(importPath));
+            return importedCss;
+        }
+        return match;
+    });
+}
+
+function showStatus(msg, type) {
+    status.innerHTML = msg;
+    status.className = 'status ' + type;
+}
+
+// --- Download & Copy ---
+downloadBtn.addEventListener('click', () => {
+    if (!mergedHTML) return;
+    const blob = new Blob([mergedHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${htmlFileName}-standalone.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showStatus('✓ Downloaded as ' + a.download, 'success');
+});
+
+copyBtn.addEventListener('click', async () => {
+    try {
+        await navigator.clipboard.writeText(output.value);
+        showStatus('✓ Copied to clipboard!', 'success');
+    } catch {
+        output.select();
+        document.execCommand('copy');
+        showStatus('✓ Copied to clipboard!', 'success');
+    }
+});
+</script>
 </body>
 </html>
