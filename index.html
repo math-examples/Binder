@@ -58,334 +58,123 @@
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-    background: var(--background);
-    color: var(--label);
+    background: var(--background); color: var(--label);
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
-    font-size: 17px;
-    line-height: 1.47;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    font-size: 17px; line-height: 1.47;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
     padding: 40px 16px;
 }
 
-/* === Container === */
-.container {
-    max-width: 640px;
-    width: 100%;
-}
+.container { max-width: 640px; width: 100%; }
 
-/* === Header === */
-.header {
-    text-align: center;
-    margin-bottom: 32px;
-}
-.header h1 {
-    font-size: 34px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
-}
-.header p {
-    font-size: 15px;
-    color: var(--secondary-label);
-    line-height: 1.5;
-    max-width: 480px;
-    margin: 0 auto;
-}
+.header { text-align: center; margin-bottom: 32px; }
+.header h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; }
+.header p { font-size: 15px; color: var(--secondary-label); line-height: 1.5; max-width: 480px; margin: 0 auto; }
+
 .privacy-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--system-green);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 100px;
-    margin-top: 12px;
-    letter-spacing: 0.2px;
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--system-green); color: #fff;
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 100px;
+    margin-top: 12px; letter-spacing: 0.2px;
 }
 
-/* === Card === */
 .card {
-    background: var(--card-background);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border-radius: var(--radius-large);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    margin-bottom: 16px;
+    background: var(--card-background); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border-radius: var(--radius-large); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 16px;
 }
 
-/* === Drop Zone === */
 .drop-zone {
-    padding: 48px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    border: 2px dashed var(--separator);
-    margin: 16px;
-    border-radius: var(--radius);
+    padding: 48px 24px; text-align: center; cursor: pointer; transition: background 0.2s;
+    border: 2px dashed var(--separator); margin: 16px; border-radius: var(--radius);
 }
-.drop-zone:hover, .drop-zone.dragover {
-    background: var(--fill-secondary);
-    border-color: var(--system-blue);
-}
-.drop-zone-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-    display: block;
-}
-.drop-zone p {
-    font-size: 17px;
-    font-weight: 500;
-    color: var(--label);
-    margin-bottom: 16px;
-}
-.drop-zone-hint {
-    font-size: 13px;
-    color: var(--tertiary-label);
-    margin-top: 8px;
-}
+.drop-zone:hover, .drop-zone.dragover { background: var(--fill-secondary); border-color: var(--system-blue); }
+.drop-zone-icon { font-size: 48px; margin-bottom: 12px; display: block; }
+.drop-zone p { font-size: 17px; font-weight: 500; color: var(--label); margin-bottom: 16px; }
+.drop-zone-hint { font-size: 13px; color: var(--tertiary-label); margin-top: 8px; }
 
-/* === Buttons === */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 28px;
-    background: var(--system-blue);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius-small);
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.1s, opacity 0.2s;
-    width: auto;
-    min-width: 120px;
+    display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px;
+    background: var(--system-blue); color: #fff; border: none; border-radius: var(--radius-small);
+    font-size: 17px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s;
+    width: auto; min-width: 120px; gap: 8px;
 }
 .btn:active { transform: scale(0.97); }
-.btn:disabled { opacity: 0.5; }
-.btn-secondary {
-    background: var(--fill);
-    color: var(--system-blue);
-}
-.btn-plain {
-    background: transparent;
-    color: var(--system-blue);
-    font-weight: 400;
-}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.btn-secondary { background: var(--fill); color: var(--system-blue); }
 
-/* === Progress === */
-.progress-wrap {
-    padding: 20px 16px;
-    display: none;
-}
-.progress-bar {
-    height: 6px;
-    background: var(--fill);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 8px;
-}
-.progress-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--system-blue);
-    border-radius: 3px;
-    transition: width 0.2s ease-out;
-}
-.progress-text {
-    font-size: 13px;
-    color: var(--tertiary-label);
-    text-align: center;
-}
+.btn.processing { opacity: 0.7; pointer-events: none; }
+.btn.processing .spinner { display: inline-block; }
 
-/* === Options (Table View Style) === */
-.options {
-    display: none;
-    padding: 8px 0;
-}
-.option-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-bottom: 0.5px solid var(--separator);
-}
+.progress-wrap { padding: 20px 16px; display: none; }
+.progress-bar { height: 6px; background: var(--fill); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.progress-fill { height: 100%; width: 0%; background: var(--system-blue); border-radius: 3px; transition: width 0.2s ease-out; }
+.progress-text { font-size: 13px; color: var(--tertiary-label); text-align: center; }
+
+.options { display: none; padding: 8px 0; }
+.option-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 0.5px solid var(--separator); }
 .option-row:last-child { border-bottom: none; }
-.option-label {
-    font-size: 16px;
-    color: var(--label);
-}
-.option-hint {
-    font-size: 13px;
-    color: var(--tertiary-label);
-    margin-top: 2px;
-}
+.option-label { font-size: 16px; color: var(--label); }
+.option-hint { font-size: 13px; color: var(--tertiary-label); margin-top: 2px; }
 
-/* iOS Switch */
-.switch {
-    position: relative;
-    width: 51px;
-    height: 31px;
-    flex-shrink: 0;
-}
+.switch { position: relative; width: 51px; height: 31px; flex-shrink: 0; }
 .switch input { opacity: 0; width: 0; height: 0; }
 .switch-slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background: var(--system-gray4);
-    border-radius: 31px;
-    transition: 0.3s;
+    position: absolute; cursor: pointer; inset: 0; background: var(--system-gray4);
+    border-radius: 31px; transition: 0.3s;
 }
 .switch-slider:before {
-    content: "";
-    position: absolute;
-    height: 27px;
-    width: 27px;
-    left: 2px;
-    bottom: 2px;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.1);
+    content: ""; position: absolute; height: 27px; width: 27px; left: 2px; bottom: 2px;
+    background: #fff; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.1);
     transition: 0.3s;
 }
-.switch input:checked + .switch-slider {
-    background: var(--system-green);
-}
-.switch input:checked + .switch-slider:before {
-    transform: translateX(20px);
-}
+.switch input:checked + .switch-slider { background: var(--system-green); }
+.switch input:checked + .switch-slider:before { transform: translateX(20px); }
 
-/* Select */
-.select-wrap {
-    padding: 12px 16px;
-    border-bottom: 0.5px solid var(--separator);
-}
-.select-wrap label {
-    font-size: 16px;
-    color: var(--label);
-    display: block;
-    margin-bottom: 8px;
-}
+.select-wrap { padding: 12px 16px; border-bottom: 0.5px solid var(--separator); }
+.select-wrap label { font-size: 16px; color: var(--label); display: block; margin-bottom: 8px; }
 .select-wrap select {
-    width: 100%;
-    padding: 10px 12px;
-    background: var(--fill-secondary);
-    color: var(--label);
-    border: none;
-    border-radius: var(--radius-small);
-    font-size: 16px;
-    appearance: none;
+    width: 100%; padding: 10px 12px; background: var(--fill-secondary); color: var(--label);
+    border: none; border-radius: var(--radius-small); font-size: 16px; appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238e8e93'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 32px;
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
 }
 
-/* === File List === */
-.file-list {
-    display: none;
-    max-height: 200px;
-    overflow-y: auto;
-    padding: 8px 0;
-}
+.file-list { display: none; max-height: 200px; overflow-y: auto; padding: 8px 0; }
 .file-list ul { list-style: none; }
 .file-list li {
-    padding: 8px 16px;
-    font-size: 14px;
-    color: var(--secondary-label);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    padding: 8px 16px; font-size: 14px; color: var(--secondary-label); display: flex; align-items: center; gap: 10px;
     border-bottom: 0.5px solid var(--separator);
 }
 .file-list li:last-child { border-bottom: none; }
-.file-list li::before {
-    content: "✓";
-    color: var(--system-green);
-    font-weight: 700;
-    font-size: 12px;
-}
+.file-list li::before { content: "✓"; color: var(--system-green); font-weight: 700; font-size: 12px; }
 
-/* === Output Section === */
-.output-section {
-    display: none;
-    padding: 16px;
-}
-.output-section label {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--label);
-    margin-bottom: 8px;
-    display: block;
-}
+.output-section { display: none; padding: 16px; }
+.output-section label { font-size: 15px; font-weight: 600; color: var(--label); margin-bottom: 8px; display: block; }
 .output-section textarea {
-    width: 100%;
-    height: 180px;
-    background: var(--fill-secondary);
-    border: none;
-    border-radius: var(--radius-small);
-    padding: 12px;
-    font-family: "SF Mono", "Menlo", monospace;
-    font-size: 12px;
-    color: var(--label);
-    resize: vertical;
-    margin-bottom: 16px;
-    line-height: 1.4;
+    width: 100%; height: 180px; background: var(--fill-secondary); border: none; border-radius: var(--radius-small);
+    padding: 12px; font-family: "SF Mono", "Menlo", monospace; font-size: 12px; color: var(--label);
+    resize: vertical; margin-bottom: 16px; line-height: 1.4;
 }
-.output-section textarea:focus {
-    outline: 2px solid var(--system-blue);
-    outline-offset: -2px;
-}
-.actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
+.output-section textarea:focus { outline: 2px solid var(--system-blue); outline-offset: -2px; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .actions .btn { flex: 1; min-width: 0; }
 
-/* === Status === */
-.status {
-    font-size: 14px;
-    color: var(--tertiary-label);
-    margin-top: 16px;
-    text-align: center;
-    padding: 0 16px 16px;
-}
+.status { font-size: 14px; color: var(--tertiary-label); margin-top: 16px; text-align: center; padding: 0 16px 16px; }
 .status.error { color: var(--system-red); }
 .status.success { color: var(--system-green); }
 .status.warning { color: var(--system-orange); }
 
-/* === Spinner === */
 .spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid currentColor;
-    border-right-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    margin-right: 8px;
+    display: none; width: 16px; height: 16px; border: 2px solid currentColor;
+    border-right-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite;
     vertical-align: middle;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* === Animations === */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .fade-in { animation: fadeIn 0.3s ease-out; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--system-gray4); border-radius: 3px; }
@@ -393,14 +182,12 @@ body {
 </head>
 <body>
 <div class="container">
-    <!-- Header -->
     <div class="header fade-in">
         <h1>Binder</h1>
         <p>Merge your project into a single standalone HTML file. Upload a ZIP — everything runs locally on your device.</p>
         <span class="privacy-badge">🔒 100% Local & Private</span>
     </div>
 
-    <!-- Main Card -->
     <div class="card fade-in">
         <div class="drop-zone" id="dropZone">
             <span class="drop-zone-icon">📦</span>
@@ -440,18 +227,40 @@ body {
                 <label for="htmlSelect">HTML entry point</label>
                 <select id="htmlSelect"></select>
             </div>
+            <div class="select-wrap">
+                <label for="remoteStrategy">External assets (CDN links)</label>
+                <select id="remoteStrategy">
+                    <option value="preserve">🌐 Keep CDN links (needs network)</option>
+                    <option value="embed">📄 Single file (fully offline)</option>
+                    <option value="sidecar">📦 Download project folder (ZIP)</option>
+                    <option value="rewrite">✏️ Rewrite paths only (I'll add files)</option>
+                </select>
+            </div>
+            <!-- Short path toggle (only for rewrite/sidecar) -->
+            <div class="option-row" id="shortPathRow" style="display:none;">
+                <div>
+                    <div class="option-label">Smart short paths</div>
+                    <div class="option-hint">Collision‑free: js/a.js, fonts/, media/ — auto‑qualifies on conflict</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="shortPathOpt" checked>
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
         </div>
 
         <div class="file-list" id="fileList"><ul id="fileListUl"></ul></div>
     </div>
 
-    <!-- Output Card -->
     <div class="card fade-in" id="outputCard" style="display:none;">
         <div class="output-section" id="outputSection">
             <label for="output">Merged HTML</label>
             <textarea id="output" readonly></textarea>
             <div class="actions">
-                <button class="btn" id="downloadBtn">Download</button>
+                <button class="btn" id="downloadBtn" disabled>
+                    <span class="spinner" id="downloadSpinner"></span>
+                    <span id="downloadBtnText">Preparing…</span>
+                </button>
                 <button class="btn btn-secondary" id="copyBtn">Copy</button>
             </div>
         </div>
@@ -464,30 +273,78 @@ let fileMap = new Map();
 let mergedHTML = '';
 let htmlFileName = '';
 let htmlFiles = [];
+let sidecarAssets = new Map();
+let fetchErrors = [];
+let mergeEpoch = 0;          // race-condition guard
+let isMergeReady = false;    // tracks whether current mode has a valid output
 
-const zipInput = document.getElementById('zipInput');
-const dropZone = document.getElementById('dropZone');
-const progressWrap = document.getElementById('progressWrap');
-const progressFill = document.getElementById('progressFill');
-const progressText = document.getElementById('progressText');
-const options = document.getElementById('options');
-const stripMaps = document.getElementById('stripMaps');
-const minifyOpt = document.getElementById('minifyOpt');
-const htmlSelect = document.getElementById('htmlSelect');
-const fileList = document.getElementById('fileList');
-const fileListUl = document.getElementById('fileListUl');
-const outputCard = document.getElementById('outputCard');
-const outputSection = document.getElementById('outputSection');
-const output = document.getElementById('output');
-const status = document.getElementById('status');
-const selectZipBtn = document.getElementById('selectZipBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const copyBtn = document.getElementById('copyBtn');
+// ── New optimization structures ──
+let nameCache = new Map();       // url -> final short name (collision‑free)
+let usedNamesSet = new Set();    // O(1) collision check
+let fetchCache = new Map();      // content‑aware dedup (url -> content)
+
+// Use 'let' so we can reassign after cloning
+let zipInput = document.getElementById('zipInput');
+let dropZone = document.getElementById('dropZone');
+let progressWrap = document.getElementById('progressWrap');
+let progressFill = document.getElementById('progressFill');
+let progressText = document.getElementById('progressText');
+let options = document.getElementById('options');
+let fileList = document.getElementById('fileList');
+let fileListUl = document.getElementById('fileListUl');
+let outputCard = document.getElementById('outputCard');
+let outputSection = document.getElementById('outputSection');
+let output = document.getElementById('output');
+let status = document.getElementById('status');
+let selectZipBtn = document.getElementById('selectZipBtn');
+let downloadBtn = document.getElementById('downloadBtn');
+let downloadBtnText = document.getElementById('downloadBtnText');
+let downloadSpinner = document.getElementById('downloadSpinner');
+let copyBtn = document.getElementById('copyBtn');
+let shortPathRow = document.getElementById('shortPathRow');
+
+// These get cloned, so they must be 'let'
+let htmlSelect = document.getElementById('htmlSelect');
+let stripMaps = document.getElementById('stripMaps');
+let minifyOpt = document.getElementById('minifyOpt');
+let remoteStrategy = document.getElementById('remoteStrategy');
+let shortPathOpt = document.getElementById('shortPathOpt');
 
 const BINARY_EXT = /\.(png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf|eot|avif|heic)$/i;
-const TEXT_EXT = /\.(html?|css|js|json|xml|txt|md|svg)$/i;
+const TEXT_EXT = /\.(html?|css|js|mjs|json|xml|txt|md|svg)$/i;
 
-// --- ZIP Selection ---
+// ═══════════════════════════════════════════
+// DOWNLOAD BUTTON STATE MANAGER
+// ═══════════════════════════════════════════
+function setDownloadState(ready, customText) {
+    isMergeReady = ready;
+    if (ready && mergedHTML) {
+        downloadBtn.disabled = false;
+        downloadBtn.classList.remove('processing');
+        downloadSpinner.style.display = 'none';
+        downloadBtnText.textContent = customText || `Download ${getOutputFilename()}`;
+    } else {
+        downloadBtn.disabled = true;
+        downloadBtn.classList.add('processing');
+        downloadSpinner.style.display = ready === false ? 'inline-block' : 'none';
+        downloadBtnText.textContent = customText || 'Preparing…';
+    }
+}
+
+function getOutputFilename() {
+    const base = htmlFileName && htmlFileName.trim() ? htmlFileName : 'output';
+    switch (remoteStrategy.value) {
+        case 'preserve': return `${base}-cdn.html`;
+        case 'embed':    return `${base}-offline.html`;
+        case 'sidecar':  return `${base}-project.zip`;
+        case 'rewrite':  return `${base}-rewritten.html`;
+        default:         return `${base}-standalone.html`;
+    }
+}
+
+// ═══════════════════════════════════════════
+// ZIP Selection
+// ═══════════════════════════════════════════
 selectZipBtn.addEventListener('click', e => { e.preventDefault(); zipInput.click(); });
 zipInput.addEventListener('change', e => { if (e.target.files[0]) loadZip(e.target.files[0]); });
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
@@ -495,53 +352,73 @@ dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover
 dropZone.addEventListener('drop', e => {
     e.preventDefault(); dropZone.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (file && file.name.endsWith('.zip')) loadZip(file);
+    if (file && file.name.toLowerCase().endsWith('.zip')) loadZip(file);
     else showStatus('Please drop a ZIP file.', 'error');
 });
 
-// --- Load & Extract ZIP ---
+// ═══════════════════════════════════════════
+// Load & Extract ZIP
+// ═══════════════════════════════════════════
 async function loadZip(zipFile) {
-    if (zipFile.size > 50 * 1024 * 1024) showStatus('⚠️ Large ZIP. Processing may take a while on mobile...', 'warning');
-    
-    progressWrap.style.display = 'block'; options.style.display = 'none'; outputCard.style.display = 'none'; fileMap.clear(); htmlFiles = [];
-    
+    if (zipFile.size > 50 * 1024 * 1024) showStatus('⚠️ Large ZIP. Processing may take a while...', 'warning');
+    progressWrap.style.display = 'block';
+    options.style.display = 'none';
+    outputCard.style.display = 'none';
+    fileMap.clear();
+    htmlFiles = [];
+
+    // Disable download immediately
+    setDownloadState(false, 'Loading ZIP…');
+
     try {
         const zip = await JSZip.loadAsync(zipFile, {
             onUpdate: (meta) => {
-                const pct = Math.round(meta.percent);
-                progressFill.style.width = pct + '%';
-                progressText.textContent = `${pct}% extracted`;
+                progressFill.style.width = meta.percent + '%';
+                progressText.textContent = Math.round(meta.percent) + '% extracted';
             }
         });
-        
+
         const promises = [];
         zip.forEach((relativePath, zipEntry) => {
             if (zipEntry.dir) return;
             const path = relativePath.replace(/\\/g, '/');
             fileMap.set(path, { text: null, binary: null });
             if (BINARY_EXT.test(path)) {
-                promises.push(zipEntry.async('arraybuffer').then(buf => { if (fileMap.has(path)) fileMap.get(path).binary = buf; }));
+                promises.push(zipEntry.async('arraybuffer').then(buf => {
+                    if (fileMap.has(path)) fileMap.get(path).binary = buf;
+                }));
             } else if (TEXT_EXT.test(path)) {
-                promises.push(zipEntry.async('string').then(txt => { if (fileMap.has(path)) fileMap.get(path).text = txt; }));
+                promises.push(zipEntry.async('string').then(txt => {
+                    if (fileMap.has(path)) fileMap.get(path).text = txt;
+                }));
             }
         });
-        
+
         await Promise.all(promises);
         progressWrap.style.display = 'none';
         showStatus(`✓ Extracted ${fileMap.size} files locally.`, 'success');
         setupOptions();
-        mergeSelected();
-        outputCard.style.display = 'block';
-        outputCard.classList.add('fade-in');
     } catch (e) {
         progressWrap.style.display = 'none';
+        setDownloadState(false, 'Preparing…');
         showStatus('Error reading ZIP: ' + e.message, 'error');
     }
 }
 
-// --- Setup Options ---
+// ═══════════════════════════════════════════
+// Setup Options
+// ═══════════════════════════════════════════
 function setupOptions() {
     htmlFiles = [...fileMap.keys()].filter(p => p.endsWith('.html') || p.endsWith('.htm')).sort();
+    
+    function replaceWithClone(oldEl) {
+        const clone = oldEl.cloneNode(true);
+        clone.value = oldEl.value;
+        oldEl.parentNode.replaceChild(clone, oldEl);
+        return clone;
+    }
+
+    htmlSelect = replaceWithClone(htmlSelect);
     htmlSelect.innerHTML = '';
     htmlFiles.forEach(p => {
         const opt = document.createElement('option');
@@ -549,138 +426,650 @@ function setupOptions() {
         if (p.endsWith('index.html')) opt.selected = true;
         htmlSelect.appendChild(opt);
     });
+
+    stripMaps = replaceWithClone(stripMaps);
+    minifyOpt = replaceWithClone(minifyOpt);
+    remoteStrategy = replaceWithClone(remoteStrategy);
+    shortPathOpt = replaceWithClone(shortPathOpt);
+
+    htmlFileName = htmlSelect.value.split('/').pop().replace(/\.html?$/i, '');
     options.style.display = 'block';
-    htmlSelect.addEventListener('change', mergeSelected);
+
+    // Show/hide short path toggle based on mode
+    function updateShortPathVisibility() {
+        const mode = remoteStrategy.value;
+        if (mode === 'rewrite' || mode === 'sidecar') {
+            shortPathRow.style.display = 'flex';
+        } else {
+            shortPathRow.style.display = 'none';
+        }
+    }
+    updateShortPathVisibility();
+
+    // Attach fresh listeners
+    htmlSelect.addEventListener('change', () => {
+        htmlFileName = htmlSelect.value.split('/').pop().replace(/\.html?$/i, '');
+        mergeSelected();
+    });
     stripMaps.addEventListener('change', mergeSelected);
     minifyOpt.addEventListener('change', mergeSelected);
     
+    // Mode switch: disable button immediately, then re-merge
+    remoteStrategy.addEventListener('change', () => {
+        updateShortPathVisibility();
+        setDownloadState(false, 'Preparing…');
+        showStatus('Switching mode — re-merging…', 'warning');
+        mergeSelected();
+    });
+
+    shortPathOpt.addEventListener('change', () => {
+        setDownloadState(false, 'Preparing…');
+        mergeSelected();
+    });
+
     fileListUl.innerHTML = '';
-    [...fileMap.keys()].sort().forEach(p => { const li = document.createElement('li'); li.textContent = p; fileListUl.appendChild(li); });
+    [...fileMap.keys()].sort().forEach(p => {
+        const li = document.createElement('li'); li.textContent = p;
+        fileListUl.appendChild(li);
+    });
     fileList.style.display = 'block';
+
+    outputCard.style.display = 'block';
+    outputCard.classList.add('fade-in');
+
+    // Start first merge
+    setDownloadState(false, 'Preparing…');
+    mergeSelected();
 }
 
-// --- Merge Selected ---
-function mergeSelected() {
+// ═══════════════════════════════════════════
+// Helpers
+// ═══════════════════════════════════════════
+function getBaseDir(filePath) {
+    const lastSlash = filePath.lastIndexOf('/');
+    return lastSlash === -1 ? '' : filePath.substring(0, lastSlash + 1);
+}
+
+function resolvePath(baseDir, relative) {
+    let clean = relative.split('?')[0].split('#')[0];
+    if (/^https?:\/\//i.test(clean) || clean.startsWith('//') || clean.startsWith('data:')) return null;
+    try {
+        const base = `http://dummy.com/${baseDir}`;
+        return decodeURIComponent(new URL(clean, base).pathname.slice(1));
+    } catch { return null; }
+}
+
+function isRemoteUrl(url) {
+    return /^https?:\/\//i.test(url) || url.startsWith('//');
+}
+
+function normalizeRemoteUrl(url) {
+    if (url.startsWith('//')) return 'https:' + url;
+    return url;
+}
+
+function stripIntegrity(el) {
+    el.removeAttribute('integrity');
+    el.removeAttribute('crossorigin');
+}
+
+// ── TYPE FOLDER DETECTION ──
+function getTypeFolder(url, hintType) {
+    // Extended type detection based on URL extension
+    const extMatch = url.split('?')[0].split('#')[0].match(/\.([a-zA-Z0-9]+)$/);
+    const ext = extMatch ? extMatch[1].toLowerCase() : '';
+    
+    // Fonts
+    if (['woff', 'woff2', 'ttf', 'otf', 'eot'].includes(ext)) return 'fonts';
+    // Media
+    if (['mp4', 'webm', 'ogg', 'mp3', 'wav', 'flac', 'aac'].includes(ext)) return 'media';
+    // Data
+    if (['json', 'xml', 'csv', 'pdf'].includes(ext)) return 'data';
+    // Images (including svg)
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'avif', 'heic'].includes(ext)) return 'images';
+    // Scripts
+    if (['js', 'mjs', 'ts', 'jsx', 'tsx'].includes(ext) || hintType === 'script') return 'js';
+    // Styles
+    if (['css', 'scss', 'less'].includes(ext) || hintType === 'style') return 'css';
+    
+    // Default based on hint
+    if (hintType === 'image') return 'images';
+    return 'data';
+}
+
+// ── COLLISION‑FREE SMART SHORT NAME GENERATOR ──
+function getLocalNameForRemote(url, type) {
+    const useShort = shortPathOpt && shortPathOpt.checked && (remoteStrategy.value === 'rewrite' || remoteStrategy.value === 'sidecar');
+    
+    if (useShort) {
+        // Return cached if exists
+        if (nameCache.has(url)) return nameCache.get(url);
+        
+        try {
+            const u = new URL(normalizeRemoteUrl(url));
+            const typeDir = getTypeFolder(u.pathname, type);
+            
+            // Extract basename from pathname
+            let pathname = u.pathname;
+            if (pathname.startsWith('/')) pathname = pathname.slice(1);
+            if (!pathname || pathname.endsWith('/')) {
+                let fn = type === 'script' ? 'script.js' : type === 'style' ? 'style.css' : 'asset.bin';
+                pathname = pathname ? pathname + fn : fn;
+            }
+            
+            const parts = pathname.split('/');
+            let basename = parts.pop().split('?')[0];
+            
+            // Ensure extension
+            if (!basename.includes('.')) {
+                if (type === 'script') basename += '.js';
+                else if (type === 'style') basename += '.css';
+                else if (type === 'image') basename += '.png';
+                else basename += '.bin';
+            }
+            
+            // Sanitize basename (keep alphanumeric, dots, hyphens, underscores)
+            basename = basename.replace(/[^a-zA-Z0-9._\-]/g, '_');
+            
+            // Candidate 1: flat in type folder
+            let candidate = `${typeDir}/${basename}`;
+            
+            // Check collision with O(1) Set
+            if (!usedNamesSet.has(candidate)) {
+                usedNamesSet.add(candidate);
+                nameCache.set(url, candidate);
+                return candidate;
+            }
+            
+            // Collision! Try qualifier 1: domain
+            const domain = u.hostname.replace(/\./g, '_');
+            candidate = `${typeDir}/${domain}/${basename}`;
+            if (!usedNamesSet.has(candidate)) {
+                usedNamesSet.add(candidate);
+                nameCache.set(url, candidate);
+                return candidate;
+            }
+            
+            // Collision! Try qualifier 2: parent directory from URL
+            if (parts.length > 0) {
+                const parentDir = parts[parts.length - 1].replace(/[^a-zA-Z0-9._\-]/g, '_');
+                if (parentDir) {
+                    candidate = `${typeDir}/${parentDir}/${basename}`;
+                    if (!usedNamesSet.has(candidate)) {
+                        usedNamesSet.add(candidate);
+                        nameCache.set(url, candidate);
+                        return candidate;
+                    }
+                }
+            }
+            
+            // Last resort: numeric suffix
+            const nameParts = basename.split('.');
+            const ext = nameParts.length > 1 ? nameParts.pop() : 'bin';
+            const nameOnly = nameParts.join('.') || 'asset';
+            let counter = 2;
+            while (true) {
+                candidate = `${typeDir}/${nameOnly}_${counter}.${ext}`;
+                if (!usedNamesSet.has(candidate)) {
+                    usedNamesSet.add(candidate);
+                    nameCache.set(url, candidate);
+                    return candidate;
+                }
+                counter++;
+            }
+            
+        } catch {
+            // Fallback for invalid URLs
+            const typeDir = type === 'script' ? 'js' : type === 'style' ? 'css' : 'data';
+            const fallback = type === 'script' ? 'asset.js' : type === 'style' ? 'asset.css' : 'asset.bin';
+            let candidate = `${typeDir}/${fallback}`;
+            if (usedNamesSet.has(candidate)) {
+                let counter = 2;
+                while (usedNamesSet.has(`${typeDir}/asset_${counter}.${fallback.split('.').pop()}`)) counter++;
+                candidate = `${typeDir}/asset_${counter}.${fallback.split('.').pop()}`;
+            }
+            usedNamesSet.add(candidate);
+            nameCache.set(url, candidate);
+            return candidate;
+        }
+    } else {
+        // Full pathname mode (original behavior)
+        try {
+            const u = new URL(normalizeRemoteUrl(url));
+            let pathname = u.pathname;
+            if (pathname.startsWith('/')) pathname = pathname.slice(1);
+            if (!pathname || pathname.endsWith('/')) {
+                let fn = type === 'script' ? 'script.js' : type === 'style' ? 'style.css' : 'image.png';
+                pathname = pathname ? pathname + fn : fn;
+            }
+            const lastSeg = pathname.split('/').pop();
+            if (!lastSeg.includes('.')) {
+                if (type === 'script') pathname += '.js';
+                else if (type === 'style') pathname += '.css';
+                else pathname += '.png';
+            }
+            return pathname.replace(/[^a-zA-Z0-9._\-\/]/g, '_');
+        } catch {
+            return type === 'script' ? 'asset.js' : type === 'style' ? 'asset.css' : 'asset.png';
+        }
+    }
+}
+
+function getMimeForType(type) {
+    if (type === 'script') return 'application/javascript';
+    if (type === 'style') return 'text/css';
+    return 'application/octet-stream';
+}
+
+// ── CONTENT‑AWARE DEDUP FETCH ──
+async function fetchRemoteText(url) {
+    const normalized = normalizeRemoteUrl(url);
+    // Check cache first
+    if (fetchCache.has(normalized)) {
+        const cached = fetchCache.get(normalized);
+        if (cached.text !== undefined) return cached.text;
+        // If only binary cached, convert to text (shouldn't happen but safety)
+        throw new Error(`Cached content is binary, not text for ${normalized}`);
+    }
+    try {
+        const res = await fetch(normalized, { mode: 'cors', cache: 'no-cache' });
+        if (res.ok) {
+            const text = await res.text();
+            fetchCache.set(normalized, { text });
+            return text;
+        }
+        throw new Error(`HTTP ${res.status}`);
+    } catch (e) {
+        throw new Error(`Cannot fetch ${normalized}: ${e.message}`);
+    }
+}
+
+async function fetchRemoteBlob(url) {
+    const normalized = normalizeRemoteUrl(url);
+    if (fetchCache.has(normalized)) {
+        const cached = fetchCache.get(normalized);
+        if (cached.blob) return cached.blob;
+        // If text cached, we don't have blob; re-fetch (rare edge case)
+    }
+    try {
+        const res = await fetch(normalized, { mode: 'cors', cache: 'no-cache' });
+        if (res.ok) {
+            const blob = await res.blob();
+            fetchCache.set(normalized, { blob });
+            return blob;
+        }
+        throw new Error(`HTTP ${res.status}`);
+    } catch (e) {
+        throw new Error(`Cannot fetch ${normalized}: ${e.message}`);
+    }
+}
+
+function blobToDataURI(blob) {
+    return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsDataURL(blob);
+    });
+}
+
+function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+    return btoa(binary);
+}
+
+// ═══════════════════════════════════════════
+// CSS Processing
+// ═══════════════════════════════════════════
+async function processCssText(cssText, cssBaseDir, strategy) {
+    const importRegex = /@import\s+(?:url\(['"]?([^'")]+)['"]?\)|['"]([^'"]+)['"])\s*;?/gi;
+    let processed = cssText;
+    const imports = [];
+    let match;
+    while ((match = importRegex.exec(cssText)) !== null) {
+        const impUrl = match[1] || match[2];
+        if (!isRemoteUrl(impUrl)) {
+            const localPath = resolvePath(cssBaseDir, impUrl);
+            if (localPath && fileMap.has(localPath)) {
+                imports.push({ fullMatch: match[0], url: impUrl, isLocal: true, localPath });
+            }
+        } else {
+            imports.push({ fullMatch: match[0], url: impUrl, isLocal: false });
+        }
+    }
+
+    for (const imp of imports) {
+        if (imp.isLocal) {
+            const importedText = fileMap.get(imp.localPath).text || '';
+            const nested = await processCssText(importedText, getBaseDir(imp.localPath), strategy);
+            processed = processed.replace(imp.fullMatch, nested);
+        } else {
+            if (strategy === 'embed') {
+                try {
+                    const fetched = await fetchRemoteText(imp.url);
+                    const nested = await processCssText(fetched, '', strategy);
+                    processed = processed.replace(imp.fullMatch, `\n/* inlined @import */\n${nested}\n`);
+                } catch (e) {
+                    fetchErrors.push(imp.url);
+                }
+            } else if (strategy === 'rewrite' || strategy === 'sidecar') {
+                const localName = getLocalNameForRemote(imp.url, 'style');
+                try {
+                    const fetched = await fetchRemoteText(imp.url);
+                    const nested = await processCssText(fetched, '', strategy);
+                    if (strategy === 'rewrite') {
+                        fileMap.set(localName, { text: nested, binary: null });
+                    } else {
+                        sidecarAssets.set(localName, { content: nested, mime: 'text/css' });
+                    }
+                    processed = processed.replace(imp.fullMatch, `@import url("${localName}");`);
+                } catch (e) {
+                    fetchErrors.push(imp.url);
+                }
+            }
+        }
+    }
+
+    processed = processed.replace(/url\(['"]?([^'")]+)['"]?\)/gi, (match, url) => {
+        if (/^https?:\/\//i.test(url) || url.startsWith('//') || url.startsWith('data:')) return match;
+        const assetPath = resolvePath(cssBaseDir, url);
+        if (assetPath && fileMap.has(assetPath)) {
+            const entry = fileMap.get(assetPath);
+            if (entry.binary) {
+                const ext = assetPath.split('.').pop().toLowerCase();
+                const mime = { png:'image/png', jpg:'image/jpeg', jpeg:'image/jpeg', gif:'image/gif', svg:'image/svg+xml', webp:'image/webp', ico:'image/x-icon', woff:'font/woff', woff2:'font/woff2', ttf:'font/ttf', otf:'font/otf' }[ext] || 'application/octet-stream';
+                return `url(data:${mime};base64,${arrayBufferToBase64(entry.binary)})`;
+            } else if (entry.text && assetPath.endsWith('.svg')) {
+                return `url(data:image/svg+xml;utf8,${encodeURIComponent(entry.text)})`;
+            }
+        }
+        return match;
+    });
+
+    return processed;
+}
+
+// ═══════════════════════════════════════════
+// Main Merge (with epoch guard)
+// ═══════════════════════════════════════════
+async function mergeSelected() {
     const htmlPath = htmlSelect.value;
     if (!htmlPath || !fileMap.has(htmlPath)) return;
-    
+
+    const myEpoch = ++mergeEpoch;
+    setDownloadState(false, 'Preparing…');
+
     let files = new Map(fileMap);
-    if (stripMaps.checked) for (const [path] of [...files]) if (path.endsWith('.map')) files.delete(path);
+    if (stripMaps.checked) {
+        for (const [path] of [...files]) {
+            if (path.endsWith('.map')) files.delete(path);
+        }
+    }
+
+    const originalMap = fileMap;
+    fileMap = files;
+    sidecarAssets.clear();
+    fetchErrors = [];
     
-    const originalMap = fileMap; fileMap = files;
-    
+    // Reset optimization structures
+    nameCache.clear();
+    usedNamesSet.clear();
+    fetchCache.clear();
+
     try {
         const baseDir = getBaseDir(htmlPath);
         const htmlText = files.get(htmlPath).text;
         htmlFileName = htmlPath.split('/').pop().replace(/\.html?$/i, '');
-        let result = mergeHTML(htmlText, baseDir);
-        if (minifyOpt.checked) result = result.replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+        const strategy = remoteStrategy.value;
         
-        mergedHTML = result;
+        const result = await mergeHTML(htmlText, baseDir, strategy);
+        let finalOutput = result;
+        if (minifyOpt.checked) {
+            finalOutput = finalOutput.replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+        }
+
+        // Race condition: discard stale result
+        if (myEpoch !== mergeEpoch) return;
+
+        mergedHTML = finalOutput;
         output.value = mergedHTML;
         outputSection.style.display = 'block';
-        
+
         const sizeKB = Math.round(new Blob([mergedHTML]).size / 1024);
-        if (sizeKB > 5000) showStatus(`⚠️ Output is ${sizeKB}KB — may be slow on mobile.`, 'warning');
-        else showStatus(`✓ Merged ${files.size} files (${sizeKB}KB). Ready!`, 'success');
-    } catch (e) { showStatus('Error: ' + e.message, 'error'); }
-    finally { fileMap = originalMap; }
+        const filename = getOutputFilename();
+
+    if (strategy === 'sidecar') {
+    const shortOn = shortPathOpt.checked;
+    showStatus(
+        fetchErrors.length
+            ? `⚠️ Merged ${files.size} local + ${sidecarAssets.size} remote. ${fetchErrors.length} failed (CORS?).`
+            : shortOn
+                ? `✓ Merged ${files.size} local + ${sidecarAssets.size} remote. Ready for ZIP!`
+                : `✓ Merged ${files.size} local + ${sidecarAssets.size} remote (full URL paths). Ready for ZIP!`,
+        fetchErrors.length ? 'warning' : 'success'
+    );
+} else if (strategy === 'rewrite') {
+    const shortOn = shortPathOpt.checked;
+    showStatus(
+        fetchErrors.length
+            ? `⚠️ Rewrote paths. ${fetchErrors.length} fetches failed (CORS?) — those kept as remote.`
+            : shortOn
+                ? `✓ Rewrote ${files.size} files. Paths changed to local (js/, css/, images/, fonts/, media/, data/).`
+                : `✓ Rewrote ${files.size} files. Paths changed to full URL pathnames.`,
+        fetchErrors.length ? 'warning' : 'success'
+    );
+} else {
+            showStatus(
+                fetchErrors.length
+                    ? `⚠️ ${sizeKB}KB. ${fetchErrors.length} remote fetches failed (CORS?).`
+                    : sizeKB > 5000
+                        ? `⚠️ ${sizeKB}KB — large file.`
+                        : `✓ Merged ${files.size} files (${sizeKB}KB). Ready!`,
+                fetchErrors.length || sizeKB > 5000 ? 'warning' : 'success'
+            );
+        }
+
+        // Enable download with mode-specific filename
+        setDownloadState(true, `Download ${filename}`);
+
+    } catch (e) {
+        if (myEpoch !== mergeEpoch) return;
+        setDownloadState(false, 'Preparing…');
+        showStatus('Error: ' + e.message, 'error');
+    } finally {
+        if (myEpoch === mergeEpoch) {
+            fileMap = originalMap;
+        }
+    }
 }
 
-// --- Merging Engine ---
-function mergeHTML(htmlText, baseDir) {
+async function mergeHTML(htmlText, baseDir, strategy) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlText, 'text/html');
-    
+
+    // --- CSS Links ---
     const links = [...doc.querySelectorAll('link[rel="stylesheet"], link[href$=".css"]')];
     for (const link of links) {
         const href = link.getAttribute('href');
-        const cssPath = resolvePath(baseDir, href);
-        if (cssPath && fileMap.has(cssPath)) {
-            let cssText = fileMap.get(cssPath).text || '';
-            cssText = inlineCSSImports(cssText, getBaseDir(cssPath));
-            cssText = inlineCSSAssets(cssText, getBaseDir(cssPath));
-            const style = doc.createElement('style'); style.textContent = cssText;
-            link.parentNode.replaceChild(style, link);
+        if (!href) continue;
+        if (isRemoteUrl(href)) {
+            stripIntegrity(link);
+            if (strategy === 'embed') {
+                try {
+                    const cssText = await fetchRemoteText(href);
+                    const processed = await processCssText(cssText, '', strategy);
+                    const style = doc.createElement('style');
+                    style.textContent = processed;
+                    link.replaceWith(style);
+                } catch (e) {
+                    fetchErrors.push(href);
+                }
+            } else if (strategy === 'rewrite' || strategy === 'sidecar') {
+                const localName = getLocalNameForRemote(href, 'style');
+                try {
+                    const cssText = await fetchRemoteText(href);
+                    const processed = await processCssText(cssText, '', strategy);
+                    if (strategy === 'rewrite') {
+                        fileMap.set(localName, { text: processed, binary: null });
+                    } else {
+                        sidecarAssets.set(localName, { content: processed, mime: 'text/css' });
+                    }
+                    link.setAttribute('href', localName);
+                } catch (e) {
+                    fetchErrors.push(href);
+                }
+            }
+        } else {
+            const cssPath = resolvePath(baseDir, href);
+            if (cssPath && fileMap.has(cssPath)) {
+                stripIntegrity(link);
+                const cssText = fileMap.get(cssPath).text || '';
+                const processed = await processCssText(cssText, getBaseDir(cssPath), strategy);
+                const style = doc.createElement('style');
+                style.textContent = processed;
+                link.replaceWith(style);
+            }
         }
     }
-    
+
+    // --- Scripts ---
     const scripts = [...doc.querySelectorAll('script[src]')];
     for (const script of scripts) {
         const src = script.getAttribute('src');
-        const jsPath = resolvePath(baseDir, src);
-        if (jsPath && fileMap.has(jsPath)) {
-            const jsText = fileMap.get(jsPath).text || '';
-            const newScript = doc.createElement('script'); newScript.textContent = jsText;
-            [...script.attributes].forEach(attr => { if (attr.name !== 'src') newScript.setAttribute(attr.name, attr.value); });
-            script.parentNode.replaceChild(newScript, script);
+        if (!src) continue;
+        if (isRemoteUrl(src)) {
+            stripIntegrity(script);
+            if (strategy === 'embed') {
+                try {
+                    const jsText = await fetchRemoteText(src);
+                    const ns = doc.createElement('script');
+                    ns.textContent = jsText;
+                    [...script.attributes].forEach(a => { if (a.name !== 'src') ns.setAttribute(a.name, a.value); });
+                    script.replaceWith(ns);
+                } catch (e) {
+                    fetchErrors.push(src);
+                }
+            } else if (strategy === 'rewrite' || strategy === 'sidecar') {
+                const localName = getLocalNameForRemote(src, 'script');
+                try {
+                    const jsText = await fetchRemoteText(src);
+                    if (strategy === 'rewrite') {
+                        fileMap.set(localName, { text: jsText, binary: null });
+                    } else {
+                        sidecarAssets.set(localName, { content: jsText, mime: 'application/javascript' });
+                    }
+                    script.setAttribute('src', localName);
+                } catch (e) {
+                    fetchErrors.push(src);
+                }
+            }
+        } else {
+            const jsPath = resolvePath(baseDir, src);
+            if (jsPath && fileMap.has(jsPath)) {
+                stripIntegrity(script);
+                const jsText = fileMap.get(jsPath).text || '';
+                const ns = doc.createElement('script');
+                ns.textContent = jsText;
+                [...script.attributes].forEach(a => { if (a.name !== 'src') ns.setAttribute(a.name, a.value); });
+                script.replaceWith(ns);
+            }
         }
     }
-    
+
+    // --- Images ---
     const imgs = [...doc.querySelectorAll('img[src]')];
     for (const img of imgs) {
         const src = img.getAttribute('src');
-        const imgPath = resolvePath(baseDir, src);
-        if (imgPath && fileMap.has(imgPath)) { const dataURI = getDataURI(imgPath); if (dataURI) img.src = dataURI; }
+        if (!src) continue;
+        if (isRemoteUrl(src)) {
+            stripIntegrity(img);
+            if (strategy === 'embed') {
+                try {
+                    const blob = await fetchRemoteBlob(src);
+                    const dataURI = await blobToDataURI(blob);
+                    img.src = dataURI;
+                } catch (e) {
+                    fetchErrors.push(src);
+                }
+            } else if (strategy === 'rewrite' || strategy === 'sidecar') {
+                const localName = getLocalNameForRemote(src, 'image');
+                try {
+                    const blob = await fetchRemoteBlob(src);
+                    if (strategy === 'rewrite') {
+                        fileMap.set(localName, { text: null, binary: await blob.arrayBuffer() });
+                    } else {
+                        sidecarAssets.set(localName, { content: blob, mime: blob.type || 'application/octet-stream', isBinary: true });
+                    }
+                    img.src = localName;
+                } catch (e) {
+                    fetchErrors.push(src);
+                }
+            }
+        } else {
+            const imgPath = resolvePath(baseDir, src);
+            if (imgPath && fileMap.has(imgPath)) {
+                stripIntegrity(img);
+                const entry = fileMap.get(imgPath);
+                if (entry.binary) {
+                    const ext = imgPath.split('.').pop().toLowerCase();
+                    const mime = { png:'image/png', jpg:'image/jpeg', jpeg:'image/jpeg', gif:'image/gif', svg:'image/svg+xml', webp:'image/webp', ico:'image/x-icon' }[ext] || 'application/octet-stream';
+                    img.src = `data:${mime};base64,${arrayBufferToBase64(entry.binary)}`;
+                }
+            }
+        }
     }
-    
+
     return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
 }
 
-function inlineCSSAssets(cssText, cssBaseDir) {
-    return cssText.replace(/url\(['"]?([^'")]+)['"]?\)/gi, (match, url) => {
-        if (/^https?:\/\//i.test(url) || url.startsWith('//') || url.startsWith('data:')) return match;
-        const assetPath = resolvePath(cssBaseDir, url);
-        if (assetPath && fileMap.has(assetPath)) { const dataURI = getDataURI(assetPath); if (dataURI) return `url(${dataURI})`; }
-        return match;
-    });
-}
+// ═══════════════════════════════════════════
+// Download (uses mode-specific filename)
+// ═══════════════════════════════════════════
+downloadBtn.addEventListener('click', async () => {
+    if (!mergedHTML || !isMergeReady) return;
+    const strategy = remoteStrategy.value;
+    const filename = getOutputFilename();
 
-function inlineCSSImports(cssText, cssBaseDir) {
-    return cssText.replace(/@import\s+(?:url\(['"]?([^'"]+)['"]?\)|['"]([^'"]+)['"])\s*;?/gi, (match, url1, url2) => {
-        const importUrl = url1 || url2;
-        if (!importUrl) return match;
-        const importPath = resolvePath(cssBaseDir, importUrl);
-        if (importPath && fileMap.has(importPath)) {
-            let importedCss = fileMap.get(importPath).text || '';
-            importedCss = inlineCSSImports(importedCss, getBaseDir(importPath));
-            importedCss = inlineCSSAssets(importedCss, getBaseDir(importPath));
-            return importedCss;
+    if (strategy === 'sidecar' && sidecarAssets.size > 0) {
+        const zip = new JSZip();
+        zip.file(`${htmlFileName}.html`, mergedHTML);
+        for (const [path, asset] of sidecarAssets) {
+            if (asset.isBinary) zip.file(path, asset.content);
+            else zip.file(path, asset.content);
         }
-        return match;
-    });
-}
-
-function getDataURI(path) {
-    const entry = fileMap.get(path); if (!entry) return null;
-    const ext = path.split('.').pop().toLowerCase();
-    const mime = { png:'image/png', jpg:'image/jpeg', jpeg:'image/jpeg', gif:'image/gif', svg:'image/svg+xml', webp:'image/webp', ico:'image/x-icon', woff:'font/woff', woff2:'font/woff2', ttf:'font/ttf', otf:'font/otf' }[ext] || 'application/octet-stream';
-    if (entry.binary) return `data:${mime};base64,${arrayBufferToBase64(entry.binary)}`;
-    else if (entry.text && ext === 'svg') return `data:image/svg+xml;utf8,${encodeURIComponent(entry.text)}`;
-    return null;
-}
-
-function arrayBufferToBase64(buffer) { let binary=''; const bytes=new Uint8Array(buffer); for(let i=0;i<bytes.byteLength;i++) binary+=String.fromCharCode(bytes[i]); return btoa(binary); }
-function getBaseDir(filePath) { const lastSlash = filePath.lastIndexOf('/'); return lastSlash === -1 ? '' : filePath.substring(0, lastSlash + 1); }
-function resolvePath(baseDir, relative) {
-    let clean = relative.split('?')[0].split('#')[0];
-    if (/^https?:\/\//i.test(clean) || clean.startsWith('//') || clean.startsWith('data:')) return null;
-    try { const base = `http://dummy.com/${baseDir}`; return decodeURIComponent(new URL(clean, base).pathname.slice(1)); } catch { return null; }
-}
-function showStatus(msg, type) { status.innerHTML = msg; status.className = 'status ' + (type || ''); }
-
-downloadBtn.addEventListener('click', () => {
-    if (!mergedHTML) return;
-    const blob = new Blob([mergedHTML], { type: 'text/html' });
-    const url = URL.createObjectURL(blob); const a = document.createElement('a');
-    a.href = url; a.download = `${htmlFileName}-standalone.html`; a.click(); URL.revokeObjectURL(url);
-    showStatus('✓ Downloaded as ' + a.download, 'success');
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        a.click(); URL.revokeObjectURL(url);
+        showStatus('✓ Downloaded ' + filename, 'success');
+    } else {
+        const blob = new Blob([mergedHTML], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        a.click(); URL.revokeObjectURL(url);
+        showStatus('✓ Downloaded ' + filename, 'success');
+    }
 });
 
+// --- Copy ---
 copyBtn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(output.value); showStatus('✓ Copied to clipboard!', 'success'); }
-    catch { output.select(); document.execCommand('copy'); showStatus('✓ Copied!', 'success'); }
+    try {
+        await navigator.clipboard.writeText(output.value);
+        showStatus('✓ Copied to clipboard!', 'success');
+    } catch {
+        output.select(); document.execCommand('copy');
+        showStatus('✓ Copied!', 'success');
+    }
 });
+
+function showStatus(msg, type) {
+    status.innerHTML = msg;
+    status.className = 'status ' + (type || '');
+}
 </script>
 </body>
 </html>
